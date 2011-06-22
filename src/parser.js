@@ -1,61 +1,80 @@
-/***********************************************************************
+/* @license
 
-  A JavaScript tokenizer / parser / beautifier / compressor.
+  Copyright 2011 (c) Lauri Paimen <lauri@paimen.info> 
+  Copyright 2010 (c) Mihai Bazon <mihai.bazon@gmail.com>
+  Based on parse-js (http://marijn.haverbeke.nl/parse-js/).
 
-  This version is suitable for Node.js.  With minimal changes (the
-  exports stuff) it should work on any JS platform.
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
 
-  This file contains the tokenizer/parser.  It is a port to JavaScript
-  of parse-js [1], a JavaScript parser library written in Common Lisp
-  by Marijn Haverbeke.  Thank you Marijn!
+      * Redistributions of source code must retain the above
+        copyright notice, this list of conditions and the following
+        disclaimer.
 
-  [1] http://marijn.haverbeke.nl/parse-js/
+      * Redistributions in binary form must reproduce the above
+        copyright notice, this list of conditions and the following
+        disclaimer in the documentation and/or other materials
+        provided with the distribution.
 
-  Exported functions:
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER “AS IS” AND ANY
+  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE
+  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+  OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+  THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
+*/
 
-    - tokenizer(code) -- returns a function.  Call the returned
-      function to fetch the next token.
 
-    - parse(code) -- returns an AST of the given JavaScript code.
+/*
+ * QML parser and parsetree'er.
+ *
+ * Based on Javascript parser written by Mihai Bazon for UglifyJS project.
+ * That, again, is a port of Javascript parser by Marijn Haverbeke.
+ * Big thanks to both of you (and others involved)!
+ * UglifyJS: https://github.com/mishoo/UglifyJS
+ * Marijn's parser: http://marijn.haverbeke.nl/parse-js/
+ *
+ * The primary goal of this file is to offer QML parsing *on top of UglifyJS
+ * parser* and to change Javascript parts as little as possible. If you find
+ * bugs/improvements to Javascript parsing parts, check if those are fixed to
+ * UglifyJS parser first. If not, fix them there. After UglifyJS has been fixed,
+ * backport the changes to this file. Less changes to Javascript, more easy it
+ * will be to keep up with UglifyJS.
+ * Ultimately it would be great to keep the original parser and QML additions in
+ * different files but the structure of code does not support that.
+ * 
+ * Exports:
+ *
+ * - QMLBinding(src, tree) to pass qml bindings along.
+ *
+ * - parseQML(src) -- parses QML source and returns it as output tree expected
+ *   by the QML engine
+ *
+ * - qmlparse(src) -- parses QML source and returns tree a la uglifyjs parser.
+ *   Currently used for debugging purposes.
+ */
 
-  -------------------------------- (C) ---------------------------------
+// Object cloning for debug prints.
+function clone(obj){
+    if(obj == null || typeof(obj) != 'object')
+        return obj;
 
-                           Author: Mihai Bazon
-                         <mihai.bazon@gmail.com>
-                       http://mihai.bazon.net/blog
+    var temp = {}; // changed
 
-  Distributed under the BSD license:
+    for(var key in obj)
+        temp[key] = clone(obj[key]);
+    return temp;
+}
 
-    Copyright 2010 (c) Mihai Bazon <mihai.bazon@gmail.com>
-    Based on parse-js (http://marijn.haverbeke.nl/parse-js/).
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions
-    are met:
-
-        * Redistributions of source code must retain the above
-          copyright notice, this list of conditions and the following
-          disclaimer.
-
-        * Redistributions in binary form must reproduce the above
-          copyright notice, this list of conditions and the following
-          disclaimer in the documentation and/or other materials
-          provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER “AS IS” AND ANY
-    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE
-    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
-    THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-    SUCH DAMAGE.
-
- ***********************************************************************/
+// dummy javascript console in case it doesn't exist.
+if (!window.console) window.console = { log: function(){} };
 
 /* -----[ Tokenizer (constants) ]----- */
 
@@ -663,7 +682,7 @@ function NodeWithToken(str, start, end) {
 
 NodeWithToken.prototype.toString = function() { return this.name; };
 
-function parse($TEXT, exigent_mode, embed_tokens) {
+function qmlparse($TEXT, exigent_mode, embed_tokens) {
 
         var S = {
                 input       : typeof $TEXT == "string" ? tokenizer($TEXT, true) : $TEXT,
@@ -720,7 +739,7 @@ function parse($TEXT, exigent_mode, embed_tokens) {
                 if (is(type, val)) {
                         return next();
                 }
-                token_error(S.token, "Unexpected token " + S.token.type + ", expected " + type);
+                token_error(S.token, "Unexpected token " + S.token.type + " " + S.token.val + ", expected " + type + " " + val);
         };
 
         function expect(punc) { return expect_token("punc", punc); };
@@ -1243,10 +1262,123 @@ function parse($TEXT, exigent_mode, embed_tokens) {
                         --S.in_loop;
                 }
         };
+        
+        function qml_is_element(str) {
+            return str[0].toUpperCase() == str[0];
+        }
+
+        function qmlblock() {
+            expect("{");
+            var a = [];
+            while (!is("punc", "}")) {
+                if (is("eof")) unexpected();
+                a.push(qmlstatement());
+            }
+            expect("}");
+            return a;
+        }
+        
+        function qmlproperty() {
+            switch (S.token.type) { 
+                case "name":
+                    return as("qmlbinding", statement());
+                case "num":
+                case "string":
+                    return as("qmlvalue", prog1(S.token.value, next,
+                        semicolon));
+                default:
+                    todo();
+            }
+        }
+        
+        function qmlpropdef() {
+            next();
+            var type = S.token.value;
+            next();
+            var name = S.token.value;
+            next();
+            expect(":");
+            // TODO: bindings
+            return as("qmlpropdef", type, name, qmlproperty());
+
+        }
+        
+        function qmlstatement() {
+            if (is("keyword", "function")) {
+                var from = S.token.pos;
+                next();
+                var stat = function_(true);
+                var to = S.token.pos;
+                var name = stat[1];
+                return as("qmlmethod", name, stat,
+                    $TEXT.substr(from, to - from));
+            } else if (is("name", "property")) {
+                return qmlpropdef();
+            } else if (S.token.type == "name") {
+                var propname = S.token.value;
+                if (qml_is_element(propname)) {
+                    // Element statement
+                    next();
+                    // todo: this is only basic case
+                    return as("qmlelem", propname, qmlblock());
+                } else {
+                    // property statement
+                    next();
+                    if (is("punc", ".")) {
+                        // anchors, fonts etc, a.b: statement;
+                        // Assume only one subproperty
+                        next();
+                        var subname = S.token.value;
+                        next();
+                        expect(":");
+                        var from = S.token.pos,
+                            stat = statement(),
+                            to = S.token.pos;
+                        return as("qmlobjdef", propname, subname, stat,
+                            $TEXT.substr(from, to - from));
+                    } else {
+                        // Evaluatable item
+                        expect(":");
+                        var from = S.token.pos,
+                            stat = statement(),
+                            to = S.token.pos;
+                        return as("qmlprop", propname, stat,
+                            $TEXT.substr(from, to - from));
+                    }
+                }
+            } else {
+                todo();
+            }
+            
+        }
+        
+        function qmlimport() {
+            // todo
+            next();
+            next();
+            next();
+        }
+
+        function qmldocument() {
+            // Skip imports
+            while (is("name", "import")) {
+                qmlimport();
+            }
+            return qmlstatement();
+        };
+
+        function amIn(s) {
+            console && console.log(s, clone(S), S.token.type, S.token.value);
+        }
+        function todo() {
+            amIn("todo parse:");
+            next();
+        }
 
         return as("toplevel", (function(a){
                 while (!is("eof"))
-                        a.push(statement());
+                        a.push(qmldocument());
+//                        a.push(statement());
                 return a;
         })([]));
 
@@ -1294,22 +1426,3 @@ function HOP(obj, prop) {
 };
 
 var warn = function() {};
-
-/* -----[ Exports ]----- */
-
-exports.tokenizer = tokenizer;
-exports.parse = parse;
-exports.slice = slice;
-exports.curry = curry;
-exports.member = member;
-exports.array_to_hash = array_to_hash;
-exports.PRECEDENCE = PRECEDENCE;
-exports.KEYWORDS_ATOM = KEYWORDS_ATOM;
-exports.RESERVED_WORDS = RESERVED_WORDS;
-exports.KEYWORDS = KEYWORDS;
-exports.ATOMIC_START_TOKEN = ATOMIC_START_TOKEN;
-exports.OPERATORS = OPERATORS;
-exports.is_alphanumeric_char = is_alphanumeric_char;
-exports.set_logger = function(logger) {
-        warn = logger;
-};
