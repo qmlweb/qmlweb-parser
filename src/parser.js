@@ -1,6 +1,6 @@
 /* @license
 
-  Copyright 2011 (c) Lauri Paimen <lauri@paimen.info> 
+  Copyright 2011 (c) Lauri Paimen <lauri@paimen.info>
   Copyright 2010 (c) Mihai Bazon <mihai.bazon@gmail.com>
   Based on parse-js (http://marijn.haverbeke.nl/parse-js/).
 
@@ -49,7 +49,7 @@
  * will be to keep up with UglifyJS.
  * Ultimately it would be great to keep the original parser and QML additions in
  * different files but the structure of code does not support that.
- * 
+ *
  * Exports:
  *
  * - QMLBinding(src, tree) to pass qml bindings along.
@@ -1262,7 +1262,7 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
                         --S.in_loop;
                 }
         };
-        
+
         function qml_is_element(str) {
             return str[0].toUpperCase() == str[0];
         }
@@ -1277,9 +1277,9 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
             expect("}");
             return a;
         }
-        
+
         function qmlproperty() {
-            switch (S.token.type) { 
+            switch (S.token.type) {
                 case "name":
                     return as("qmlbinding", statement());
                 case "num":
@@ -1290,7 +1290,7 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
                     todo();
             }
         }
-        
+
         function qmlpropdef() {
             next();
             var type = S.token.value;
@@ -1365,9 +1365,8 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
             } else {
                 todo();
             }
-            
         }
-        
+
         function qmlimport() {
             // todo
             next();
