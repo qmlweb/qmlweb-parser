@@ -1298,8 +1298,11 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
             var name = S.token.value;
             next();
             expect(":");
-            // TODO: bindings
-            return as("qmlpropdef", type, name, qmlproperty());
+            var from = S.token.pos,
+                stat = statement(),
+                to = S.token.pos;
+            return as("qmlpropdef", name, type, stat,
+                    $TEXT.substr(from, to - from));
 
         }
 
@@ -1314,7 +1317,7 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
             var from = S.token.pos,
                 stat = statement(),
                 to = S.token.pos;
-            return as("qmldefaultprop", name, stat,
+            return as("qmldefaultprop", name, type, stat,
                     $TEXT.substr(from, to - from));
         }
 
