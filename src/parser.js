@@ -1378,6 +1378,8 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
                             to = S.token.pos;
                         return as("qmlobjdef", propname, subname, stat,
                             $TEXT.substr(from, to - from));
+                    } else if (is("punc", "{")) {
+                        return as("qmlobj", propname, qmlblock());
                     } else {
                         // Evaluatable item
                         expect(":");
