@@ -1304,12 +1304,15 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
             next();
             var name = S.token.value;
             next();
-            expect(":");
-            var from = S.token.pos,
-                stat = statement(),
-                to = S.token.pos;
-            return as("qmlpropdef", name, type, stat,
-                    $TEXT.substr(from, to - from));
+            if (is("punc", ":")) {
+                next();
+                var from = S.token.pos,
+                    stat = statement(),
+                    to = S.token.pos;
+                return as("qmlpropdef", name, type, stat,
+                        $TEXT.substr(from, to - from));
+            }
+            return as("qmlpropdef", name, type);
 
         }
 
