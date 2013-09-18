@@ -1247,7 +1247,7 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
         function maybe_qmlelem(no_in) {
                 var expr = maybe_assign(no_in);
                 if (is("punc", "{"))
-                    return as("qmlelem", expr[1], qmlblock());
+                    return as("qmlelem", expr[1], undefined, qmlblock());
                 return expr;
         };
 
@@ -1372,7 +1372,13 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
                     return qmlpropdef();
                 } else if (qml_is_element(propname) && !is("punc", ".")) {
                     // Element
-                    return as("qmlelem", propname, qmlblock());
+                    var onProp;
+                    if (is("name", "on")) {
+                        next();
+                        onProp = S.token.value;
+                        next();
+                    }
+                    return as("qmlelem", propname, onProp, qmlblock());
                 } else {
                     // property statement
                     if (is("punc", ".")) {
