@@ -1392,9 +1392,11 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
                         var subname = S.token.value;
                         next();
                         expect(":");
+                        S.in_function++;
                         var from = S.token.pos,
                             stat = statement(),
                             to = S.token.pos;
+                        S.in_function--;
                         return as("qmlobjdef", propname, subname, stat,
                             $TEXT.substr(from, to - from));
                     } else if (is("punc", "{")) {
@@ -1402,9 +1404,11 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
                     } else {
                         // Evaluatable item
                         expect(":");
+                        S.in_function++;
                         var from = S.token.pos,
                             stat = statement(),
                             to = S.token.pos;
+                        S.in_function--;
                         return as("qmlprop", propname, stat,
                             $TEXT.substr(from, to - from));
                     }
