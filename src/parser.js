@@ -1305,6 +1305,19 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
             next();
             var name = S.token.value;
             next();
+            if (type == "alias") {
+                expect(":");
+                if (!is("name")) unexpected();
+                var objName = S.token.value;
+                next();
+                if (is("punc", ".")) {
+                    next();
+                    if (!is("name")) unexpected();
+                    var propName = S.token.value;
+                    next();
+                }
+                return as("qmlaliasdef", name, objName, propName);
+            }
             if (is("punc", ":")) {
                 next();
                 var from = S.token.pos,
@@ -1319,18 +1332,10 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
         }
 
         function qmldefaultprop() {
-            next(); //We trust that the next is "property"
             next();
-            var type = S.token.value;
-            next();
-            var name = S.token.value;
-            next();
-            expect(":");
-            var from = S.token.pos,
-                stat = statement(),
-                to = S.token.pos;
-            return as("qmldefaultprop", name, type, stat,
-                    $TEXT.substr(from, to - from));
+            expect_token("name", "property");
+
+            return as("qmldefaultprop", qmlpropdef());
         }
 
         function qmlsignaldef() {
