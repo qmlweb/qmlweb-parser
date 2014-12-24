@@ -676,6 +676,8 @@ var ATOMIC_START_TOKEN = array_to_hash([ "atom", "num", "string", "regexp", "nam
 
 /* -----[ Parser ]----- */
 
+var imports = [];
+
 function NodeWithToken(str, start, end) {
         this.name = str;
         this.start = start;
@@ -1429,17 +1431,35 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
         }
 
         function qmlimport() {
-            // todo
+          var subject = null,
+              version = null,
+              alias = null;
+          var gettingAlias = false;
+          var currentLine = S.token.line;
+
+          next();
+          while (S.token.type != 'punc' && S.token.line == currentLine) {
+            if (subject == null)
+              subject = S.token.value;
+            else if (gettingAlias == false)
+            {
+              if (S.token.value == 'as')
+                gettingAlias = true;
+              else if (version == null)
+                version = S.token.value;
+            }
+            else
+              alias = S.token.value;
             next();
-            next();
-            next();
+          }
+          while (S.token.type == 'punc') { next(); }
+          imports.push({ subject: subject, version: version, alias: alias });
         }
 
         function qmldocument() {
-            // Skip imports
-            while (is("name", "import")) {
+            imports = [];
+            while (is("name", "import"))
                 qmlimport();
-            }
             return qmlstatement();
         };
 
