@@ -1456,8 +1456,11 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
         function qmldocument() {
             imports = [];
             while (is("name", "import"))
-                qmlimport();
-            return qmlstatement();
+              qmlimport();
+            var statement =  qmlstatement();
+            statement.push('imports');
+            statement.push(imports);
+            return statement;
         };
 
         function amIn(s) {
