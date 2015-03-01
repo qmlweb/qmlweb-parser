@@ -1138,7 +1138,10 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
         };
 
         function array_() {
-                return as("array", expr_list("]", !exigent_mode, true));
+                var from = S.token.pos,
+                    stat = expr_list("]", !exigent_mode, true),
+                    to = S.token.pos;
+                return as("array", stat, "[" + S.text.substr(from, to - from));
         };
 
         function object_() {
