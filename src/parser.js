@@ -738,7 +738,7 @@ function qmlparse($TEXT, exigent_mode, embed_tokens) {
                 js_error(msg,
                          eLine,
                          col != null ? col : ctx.tokcol,
-                         pos != null ? pos : ctx.tokpos),
+                         pos != null ? pos : ctx.tokpos,
                          extractLinesForErrorDiag( S.text, eLine ) );
         };
 
