@@ -276,6 +276,7 @@ function QMLParseError(message, line, col, pos, comment) {
         this.pos = pos;
         this.comment = comment ? comment : "";
         this.message = message + " (line: " + line + ", col: " + col + ", pos: " + pos + ")" + "\n" + comment + "\n"
+        this.file = nowParsingFile;
         try {
                 ({})();
         } catch(ex) {
