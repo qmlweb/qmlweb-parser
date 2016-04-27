@@ -53,13 +53,8 @@
  *
  * Exports:
  *
- * - QMLBinding(src, tree) to pass qml bindings along.
- *
  * - parseQML(src) -- parses QML source and returns it as output tree expected
  *   by the QML engine
- *
- * - qmlweb_parse(src) -- parses QML or JS source and returns tree a la uglifyjs parser.
- *   Currently used for debugging purposes.
  */
 
 // Object cloning for debug prints.
@@ -276,7 +271,7 @@ function QMLParseError(message, line, col, pos, comment) {
         this.pos = pos;
         this.comment = comment ? comment : "";
         this.message = message + " (line: " + line + ", col: " + col + ", pos: " + pos + ")" + "\n" + comment + "\n"
-        this.file = nowParsingFile;
+        this.file = qmlweb_parse.nowParsingFile;
         try {
                 ({})();
         } catch(ex) {
@@ -696,6 +691,7 @@ function NodeWithToken(str, start, end) {
 
 NodeWithToken.prototype.toString = function() { return this.name; };
 
+qmlweb_parse.nowParsingFile = ''; // TODO: make a parameter of qmlweb_parse
 qmlweb_parse.QMLDocument = 1;
 qmlweb_parse.JSResource = 2;
 function qmlweb_parse($TEXT, document_type, exigent_mode, embed_tokens) {
@@ -1562,3 +1558,7 @@ function HOP(obj, prop) {
 };
 
 var warn = function() {};
+
+if (typeof global != "undefined") {
+  global.qmlweb_parse = qmlweb_parse;
+}
