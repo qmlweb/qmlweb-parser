@@ -1559,6 +1559,4 @@ function HOP(obj, prop) {
 
 var warn = function() {};
 
-if (typeof global != "undefined") {
-  global.qmlweb_parse = qmlweb_parse;
-}
+exports.qmlweb_parse = qmlweb_parse;

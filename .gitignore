@@ -1,0 +1,15 @@
+node_modules/
+lib/
+coverage/
+tmp/
+build/
+.idea/
+*~
+*.bak
+*.log
+.*.swp
+.*.swo
+*.kdev4
+*kate-swp
+.arcconfig
+.project
