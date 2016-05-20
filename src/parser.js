@@ -823,6 +823,9 @@ function qmlweb_parse($TEXT, document_type, exigent_mode, embed_tokens) {
                             case ";":
                                 next();
                                 return as("block");
+                            case ".":
+                                return is_token(peek(), "name", "pragma")
+                                    ? qml_pragma_statement() : unexpected();
                             default:
                                 unexpected();
                         }
@@ -902,6 +905,14 @@ function qmlweb_parse($TEXT, document_type, exigent_mode, embed_tokens) {
 
         function simple_statement() {
                 return as("stat", prog1(expression, semicolon));
+        };
+
+        function qml_pragma_statement() {
+                next();
+                next();
+                var pragma = S.token.value;
+                next();
+                return as("qmlpragma", pragma);
         };
 
         function break_cont(type) {
