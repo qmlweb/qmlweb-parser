@@ -1437,6 +1437,10 @@ function qmlweb_parse($TEXT, document_type, exigent_mode, embed_tokens) {
                         next();
                         var subname = S.token.value;
                         next();
+                        /* Check for ModuleQualifier.QMLElement */
+                        if (qml_is_element(subname)) {
+                            return as("qmlelem", propname + "." + subname, undefined, qmlblock());
+                        }
                         expect(":");
                         S.in_function++;
                         var from = S.token.pos,
