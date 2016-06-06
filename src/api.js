@@ -77,7 +77,7 @@ function extractLinesForErrorDiag(text, line) {
   return r;
 }
 
-function tokenizer_($TEXT) {
+function qmlweb_tokenizer($TEXT) {
   // Override UglifyJS methods
 
   parse_error = function(err) {
@@ -88,12 +88,16 @@ function tokenizer_($TEXT) {
   // return tokenizer($TEXT);
 }
 
-function qmlweb_parse_($TEXT, document_type, exigent_mode) {
+function qmlweb_parse($TEXT, document_type, exigent_mode) {
+  var embed_tokens = false; // embed_tokens option is not supported
+
+  var TEXT_ORIG = $TEXT;
+  $TEXT = qmlweb_tokenizer($TEXT, true);
 
   // WARNING: Here the original parse() code gets embedded
   // parse($TEXT, exigent_mode, false);
 
-  S.text = $TEXT.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
+  S.text = TEXT_ORIG.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
 
   // Override UglifyJS methods
 
@@ -378,34 +382,6 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode) {
     return qmldocument();
   }
 }
-
-// Overriding functions
-// WARNING: Evil!
-// eval() is being used here to bind to current scope
-
-function source(fn) {
-  return Function.prototype.toString.call(fn)
-    .replace(/\n/g, '%NL%')
-    .replace(/\r/g, '')
-    .replace(/[^{]*{/, '')
-    .replace(/}[^}]*$/, '')
-    .replace(/%NL%/g, '\n');
-}
-
-tokenizer = eval(
-  '(function($TEXT) {\n' +
-  source(tokenizer_) +
-  source(tokenizer) +
-  '\n})'
-);
-
-var qmlweb_parse = eval(
-  '(function($TEXT, document_type, exigent_mode) {\n' +
-  '  var embed_tokens = false;\n' + // embed_tokens option is not supported
-  source(parse).split('return as("toplevel"')[0] +
-  source(qmlweb_parse_) +
-  '\n})'
-);
 
 qmlweb_parse.nowParsingFile = ''; // TODO: make a parameter of qmlweb_parse
 qmlweb_parse.QMLDocument = 1;

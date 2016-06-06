@@ -1,11 +1,14 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const rename = require('gulp-rename');
+const replace = require('gulp-replace');
 const changed = require('gulp-changed');
 const order = require('gulp-order');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
 const iife = require('gulp-iife');
+
+const replacements = require('./src/replacements');
 
 const sources = [
   'src/header.js',
@@ -17,6 +20,8 @@ gulp.task('build-dev', function() {
   return gulp.src(sources)
              .pipe(order(sources, { base: __dirname }))
              .pipe(sourcemaps.init())
+             .pipe(replace(replacements[0].from, replacements[0].to))
+             .pipe(replace(replacements[1].from, replacements[1].to))
              .pipe(concat('qmlweb.parser.js'))
              .pipe(iife({
                useStrict: false,
