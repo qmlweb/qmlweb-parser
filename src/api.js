@@ -55,8 +55,9 @@ function clone(obj) {
   return temp;
 }
 
-function QMLParseError(message, line, col, pos, comment) {
+function QMLParseError(message, line, col, pos, source) {
   JS_Parse_Error.call(this, message, line, col, pos);
+  var comment = extractLinesForErrorDiag(source, line);
   this.comment = comment ? comment : "";
   this.message += " (line: " + this.line + ", col: " + col + ", pos: " + pos + ")" + "\n" + comment + "\n";
   this.file = qmlweb_parse.nowParsingFile;
@@ -81,7 +82,7 @@ function tokenizer_($TEXT) {
   // Override UglifyJS methods
 
   parse_error = function(err) {
-    throw new QMLParseError(err, S.tokline, S.tokcol, S.tokpos, extractLinesForErrorDiag(S.text, S.tokline));
+    throw new QMLParseError(err, S.tokline, S.tokcol, S.tokpos, S.text);
   };
 
   // WARNING: Here the original tokenizer() code gets embedded
@@ -103,12 +104,11 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
 
   croak = function(msg, line, col, pos) {
     var ctx = S.input.context();
-    var eLine = line != null ? line : ctx.tokline;
     throw new QMLParseError(msg,
-      eLine,
+      line != null ? line : ctx.tokline,
       col != null ? col : ctx.tokcol,
       pos != null ? pos : ctx.tokpos,
-      extractLinesForErrorDiag(S.text, eLine)
+      S.text
     );
   };
 
