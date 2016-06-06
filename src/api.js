@@ -72,7 +72,6 @@ function clone(obj){
 
 function QMLParseError(message, line, col, pos, comment) {
         JS_Parse_Error.call(this, message, line, col, pos);
-        this.line++;
         this.comment = comment ? comment : "";
         this.message += " (line: " + this.line + ", col: " + col + ", pos: " + pos + ")" + "\n" + comment + "\n";
         this.file = qmlweb_parse.nowParsingFile;

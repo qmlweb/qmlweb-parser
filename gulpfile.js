@@ -9,7 +9,7 @@ const iife = require('gulp-iife');
 
 const sources = [
   'src/header.js',
-  'src/parse-js.js',
+  'node_modules/uglify-js/lib/parse-js.js',
   'src/api.js',
 ];
 
