@@ -85,7 +85,7 @@ function qmlweb_tokenizer($TEXT) {
   };
 
   // WARNING: Here the original tokenizer() code gets embedded
-  // return tokenizer($TEXT);
+  return tokenizer($TEXT);
 }
 
 function qmlweb_parse($TEXT, document_type, exigent_mode) {
@@ -95,7 +95,8 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
   $TEXT = qmlweb_tokenizer($TEXT, true);
 
   // WARNING: Here the original parse() code gets embedded
-  // parse($TEXT, exigent_mode, false);
+  parse($TEXT,exigent_mode,false);
+  // NOTE: Don't insert spaces between arguments!
 
   S.text = TEXT_ORIG.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
 

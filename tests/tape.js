@@ -3,7 +3,9 @@
 const test = require('tape');
 const fs = require('fs');
 const path = require('path');
-const parser = require('../lib/qmlweb.parser');
+
+const parser_path = process.env.QMLWEB_PARSER_PATH || 'lib/qmlweb.parser';
+const parser = require('../' + parser_path);
 
 const saveMode = !!process.env.QMLWEB_TESTS_SAVE_MODE;
 

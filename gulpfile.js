@@ -7,6 +7,7 @@ const order = require('gulp-order');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
 const iife = require('gulp-iife');
+const istanbul = require('gulp-istanbul');
 const tape = require('gulp-tape');
 const tapSpec = require('tap-spec');
 
@@ -23,6 +24,42 @@ gulp.task('test', ['build'], function() {
     .pipe(tape({
       reporter: tapSpec()
     }));
+});
+
+gulp.task('cover', ['build-covered'], function() {
+  return gulp.src('tests/tape.js')
+    .pipe(tape({
+      reporter: tapSpec()
+    }))
+    .pipe(istanbul.writeReports());
+});
+
+gulp.task('build-covered-api', function() {
+  return gulp.src(['src/api.js'])
+    .pipe(istanbul())
+    .pipe(rename('api.covered.js'))
+    .pipe(changed('./tmp'))
+    .pipe(gulp.dest('./tmp'));
+});
+
+gulp.task('build-covered', ['build-covered-api'], function() {
+  process.env.QMLWEB_PARSER_PATH = 'tmp/qmlweb.parser.covered';
+  return gulp.src([
+      'src/header.js',
+      'node_modules/uglify-js/lib/parse-js.js',
+      'tmp/api.covered.js',
+    ])
+    .pipe(order(sources, { base: __dirname }))
+    .pipe(replace(replacements[0].from, replacements[0].to))
+    .pipe(replace(replacements[1].from, replacements[1].to))
+    .pipe(concat('qmlweb.parser.covered.js'))
+    .pipe(iife({
+      useStrict: false,
+      params: ['exports'],
+      args: ['typeof exports !== \'undefined\' ? exports : window']
+    }))
+    .pipe(changed('./tmp'))
+    .pipe(gulp.dest('./tmp'));
 });
 
 gulp.task('build-dev', function() {

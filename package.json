@@ -9,6 +9,7 @@
     "gulp-changed": "^1.3.0",
     "gulp-concat": "^2.1.7",
     "gulp-iife": "^0.3.0",
+    "gulp-istanbul": "^0.10.4",
     "gulp-order": "^1.1.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
@@ -22,7 +23,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "cover": "gulp build; istanbul cover tape ./tests/tape.js",
+    "cover": "gulp cover",
     "build": "gulp build",
     "watch": "gulp watch"
   },

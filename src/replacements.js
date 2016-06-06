@@ -13,6 +13,6 @@ const tokenizer = source(uglify.tokenizer);
 const parse = source(uglify.parse).split('return as("toplevel"')[0];
 
 module.exports = [
-  { from: '// return tokenizer($TEXT);', to: tokenizer },
-  { from: '// parse($TEXT, exigent_mode, false);', to: parse }
+  { from: 'return tokenizer($TEXT);', to: tokenizer },
+  { from: 'parse($TEXT,exigent_mode,false);', to: parse }
 ];
