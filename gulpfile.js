@@ -8,7 +8,9 @@ const sourcemaps = require('gulp-sourcemaps');
 const iife = require('gulp-iife');
 
 const sources = [
-  'src/**/*.js'
+  'src/header.js',
+  'src/parse-js.js',
+  'src/api.js',
 ];
 
 gulp.task('build-dev', function() {

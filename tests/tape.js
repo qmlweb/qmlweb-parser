@@ -4,7 +4,7 @@ const test = require('tape');
 const tapSpec = require('tap-spec');
 const fs = require('fs');
 const path = require('path');
-const parser = require('../src/parser');
+const parser = require('../lib/qmlweb.parser');
 
 const saveMode = !!process.env.QMLWEB_TESTS_SAVE_MODE;
 

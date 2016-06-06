@@ -19,8 +19,8 @@
     "tape": "^4.5.1"
   },
   "scripts": {
-    "test": "tape ./tests/tape.js",
-    "cover": "istanbul cover tape ./tests/tape.js",
+    "test": "gulp build; tape ./tests/tape.js",
+    "cover": "gulp build; istanbul cover tape ./tests/tape.js",
     "build": "gulp build",
     "watch": "gulp watch"
   },
