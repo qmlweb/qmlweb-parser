@@ -131,27 +131,12 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
     return statement_js();
   };
 
-  function qml_pragma_statement() {
-    next();
-    next();
-    var pragma = S.token.value;
-    next();
-    return as("qmlpragma", pragma);
-  }
-
   array_ = function() {
     var from = S.token.pos;
     var stat = expr_list("]", !exigent_mode, true);
     var to = S.token.pos;
     return as("array", stat, "[" + S.text.substr(from, to - from));
   };
-
-  function maybe_qmlelem(no_in) {
-    var expr = maybe_assign(no_in);
-    if (is("punc", "{"))
-      return as("qmlelem", expr[1], undefined, qmlblock());
-    return expr;
-  }
 
   expression = function(commas, no_in) {
     if (arguments.length == 0)
@@ -165,6 +150,13 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
   };
 
   // QML-specific methods
+
+  function maybe_qmlelem(no_in) {
+    var expr = maybe_assign(no_in);
+    if (is("punc", "{"))
+      return as("qmlelem", expr[1], undefined, qmlblock());
+    return expr;
+  }
 
   function qml_is_element(str) {
     return str[0].toUpperCase() == str[0];
@@ -322,6 +314,14 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
     } else {
       todo();
     }
+  }
+
+  function qml_pragma_statement() {
+    next();
+    next();
+    var pragma = S.token.value;
+    next();
+    return as("qmlpragma", pragma);
   }
 
   function qmlimport() {
