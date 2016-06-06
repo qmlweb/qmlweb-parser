@@ -385,7 +385,8 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
 }
 
 // Overriding functions
-// All current variables should be exported here!
+// WARNING: Evil!
+// eval() is being used here to bind to current scope
 
 function source(fn) {
   return Function.prototype.toString.call(fn)
@@ -396,23 +397,18 @@ function source(fn) {
     .replace(/%NL%/g, '\n');
 }
 
-var tokenizer_impl = source(tokenizer_) + source(tokenizer);
-
-var qmlweb_parse_impl = source(parse).split('return as("toplevel"')[0] + source(qmlweb_parse_);
-
-// WARNING: Evil!
-// eval() is being used here to bind to current scope
-
 tokenizer = eval(
   '(function($TEXT) {\n' +
-  tokenizer_impl +
+  source(tokenizer_) +
+  source(tokenizer) +
   '\n})'
 );
 
-qmlweb_parse = eval(
+var qmlweb_parse = eval(
   '(function($TEXT, document_type, exigent_mode) {\n' +
   '  var embed_tokens = false;\n' +
-  qmlweb_parse_impl +
+  source(parse).split('return as("toplevel"')[0] +
+  source(qmlweb_parse_) +
   '\n})'
 );
 
