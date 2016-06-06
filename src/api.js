@@ -196,18 +196,6 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
     return a;
   }
 
-  function qmlproperty() {
-    switch (S.token.type) {
-    case "name":
-      return as("qmlbinding", statement());
-    case "num":
-    case "string":
-      return as("qmlvalue", prog1(S.token.value, next, semicolon));
-    default:
-      todo();
-    }
-  }
-
   function qmlpropdef() {
     var type = S.token.value;
     next();
