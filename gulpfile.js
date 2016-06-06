@@ -7,6 +7,8 @@ const order = require('gulp-order');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
 const iife = require('gulp-iife');
+const tape = require('gulp-tape');
+const tapSpec = require('tap-spec');
 
 const replacements = require('./src/replacements');
 
@@ -15,6 +17,13 @@ const sources = [
   'node_modules/uglify-js/lib/parse-js.js',
   'src/api.js',
 ];
+
+gulp.task('test', ['build'], function() {
+  return gulp.src('tests/tape.js')
+    .pipe(tape({
+      reporter: tapSpec()
+    }));
+});
 
 gulp.task('build-dev', function() {
   return gulp.src(sources)
