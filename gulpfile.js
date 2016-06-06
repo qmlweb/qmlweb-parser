@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
-const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const changed = require('gulp-changed');
 const order = require('gulp-order');
@@ -37,7 +36,7 @@ gulp.task('cover', ['build-covered'], function() {
 gulp.task('build-covered-api', function() {
   return gulp.src(['src/api.js'])
     .pipe(istanbul())
-    .pipe(rename('api.covered.js'))
+    .pipe(concat('api.covered.js'))
     .pipe(changed('./tmp'))
     .pipe(gulp.dest('./tmp'));
 });
@@ -81,7 +80,7 @@ gulp.task('build-dev', function() {
 
 gulp.task('build', ['build-dev'], function() {
   return gulp.src('./lib/qmlweb.parser.js')
-    .pipe(rename('qmlweb.parser.min.js'))
+    .pipe(concat('qmlweb.parser.min.js'))
     .pipe(changed('./lib'))
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(uglify())
