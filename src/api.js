@@ -37,25 +37,10 @@
 /*
  * QML parser and parsetree'er.
  *
- * Based on Javascript parser written by Mihai Bazon for UglifyJS project.
- * That, again, is a port of Javascript parser by Marijn Haverbeke.
- * Big thanks to both of you (and others involved)!
- * UglifyJS: https://github.com/mishoo/UglifyJS
- * Marijn's parser: http://marijn.haverbeke.nl/parse-js/
- *
- * The primary goal of this file is to offer QML parsing *on top of UglifyJS
- * parser* and to change Javascript parts as little as possible. If you find
- * bugs/improvements to Javascript parsing parts, check if those are fixed to
- * UglifyJS parser first. If not, fix them there. After UglifyJS has been fixed,
- * backport the changes to this file. Less changes to Javascript, more easy it
- * will be to keep up with UglifyJS.
- * Ultimately it would be great to keep the original parser and QML additions in
- * different files but the structure of code does not support that.
- *
  * Exports:
  *
- * - parseQML(src) -- parses QML source and returns it as output tree expected
- *   by the QML engine
+ * - qmlweb_parse(src, type) -- parses QML source and returns it as output
+ *   tree expected by the QML engine
  */
 
 // Object cloning for debug prints.
