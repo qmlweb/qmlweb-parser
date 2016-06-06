@@ -3,6 +3,7 @@
   Copyright (c) 2010 Mihai Bazon <mihai.bazon@gmail.com>
   Copyright (c) 2011 Lauri Paimen <lauri@paimen.info>
   Copyright (c) 2013 Anton Kreuzkamp <akreuzkamp@web.de>
+  Copyright (c) 2016 qmlweb-parser contributors
   Based on parse-js (http://marijn.haverbeke.nl/parse-js/).
 
   Redistribution and use in source and binary forms, with or without
