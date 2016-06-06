@@ -18,29 +18,29 @@ const sources = [
 
 gulp.task('build-dev', function() {
   return gulp.src(sources)
-             .pipe(order(sources, { base: __dirname }))
-             .pipe(sourcemaps.init())
-             .pipe(replace(replacements[0].from, replacements[0].to))
-             .pipe(replace(replacements[1].from, replacements[1].to))
-             .pipe(concat('qmlweb.parser.js'))
-             .pipe(iife({
-               useStrict: false,
-               params: ['exports'],
-               args: ['typeof exports !== \'undefined\' ? exports : window']
-             }))
-             .pipe(changed('./lib'))
-             .pipe(sourcemaps.write('./'))
-             .pipe(gulp.dest('./lib'));
+    .pipe(order(sources, { base: __dirname }))
+    .pipe(sourcemaps.init())
+    .pipe(replace(replacements[0].from, replacements[0].to))
+    .pipe(replace(replacements[1].from, replacements[1].to))
+    .pipe(concat('qmlweb.parser.js'))
+    .pipe(iife({
+      useStrict: false,
+      params: ['exports'],
+      args: ['typeof exports !== \'undefined\' ? exports : window']
+    }))
+    .pipe(changed('./lib'))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./lib'));
 });
 
 gulp.task('build', ['build-dev'], function() {
   return gulp.src('./lib/qmlweb.parser.js')
-             .pipe(rename('qmlweb.parser.min.js'))
-             .pipe(changed('./lib'))
-             .pipe(sourcemaps.init({ loadMaps: true }))
-             .pipe(uglify())
-             .pipe(sourcemaps.write('./'))
-             .pipe(gulp.dest('./lib'));
+    .pipe(rename('qmlweb.parser.min.js'))
+    .pipe(changed('./lib'))
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./lib'));
 });
 
 gulp.task('watch', ['build'], function() {
