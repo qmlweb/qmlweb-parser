@@ -33,7 +33,6 @@
   SUCH DAMAGE.
 */
 
-
 /*
  * QML parser and parsetree'er.
  *
@@ -89,14 +88,10 @@ function tokenizer_($TEXT) {
   // return tokenizer($TEXT);
 }
 
-function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
+function qmlweb_parse_($TEXT, document_type, exigent_mode) {
 
   // WARNING: Here the original parse() code gets embedded
-  // parse($TEXT, exigent_mode, embed_tokens);
-
-  if (embed_tokens) {
-    throw new Error('embed_tokens option is not supported by qmlweb_parse');
-  }
+  // parse($TEXT, exigent_mode, false);
 
   S.text = $TEXT.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
 
@@ -406,7 +401,7 @@ tokenizer = eval(
 
 var qmlweb_parse = eval(
   '(function($TEXT, document_type, exigent_mode) {\n' +
-  '  var embed_tokens = false;\n' +
+  '  var embed_tokens = false;\n' + // embed_tokens option is not supported
   source(parse).split('return as("toplevel"')[0] +
   source(qmlweb_parse_) +
   '\n})'
