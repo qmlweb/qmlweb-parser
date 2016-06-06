@@ -1,0 +1,21 @@
+[
+  "jsresource",
+  [
+    [
+      "qmlpragma",
+      "library"
+    ],
+    [
+      "var",
+      [
+        [
+          "variable",
+          [
+            "num",
+            0
+          ]
+        ]
+      ]
+    ]
+  ]
+]

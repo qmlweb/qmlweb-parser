@@ -1,0 +1,32 @@
+[
+  "toplevel",
+  [
+    [
+      "qmlimport",
+      "QtQuick",
+      2,
+      "",
+      true
+    ],
+    [
+      "qmlimport",
+      "QmlWeb.DOM",
+      1,
+      "DOM",
+      true
+    ],
+    [
+      "qmlimport",
+      "./library.js",
+      null,
+      "Library",
+      false
+    ]
+  ],
+  [
+    "qmlelem",
+    "DOM.Div",
+    null,
+    []
+  ]
+]

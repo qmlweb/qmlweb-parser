@@ -1,0 +1,120 @@
+[
+  "toplevel",
+  [
+    [
+      "qmlimport",
+      "QtQuick",
+      2.5,
+      "",
+      true
+    ]
+  ],
+  [
+    "qmlelem",
+    "Rectangle",
+    null,
+    [
+      [
+        "qmlprop",
+        "width",
+        [
+          "stat",
+          [
+            "num",
+            75
+          ]
+        ],
+        "75\n  "
+      ],
+      [
+        "qmlprop",
+        "height",
+        [
+          "stat",
+          [
+            "num",
+            15
+          ]
+        ],
+        "15\n  "
+      ],
+      [
+        "qmlprop",
+        "color",
+        [
+          "stat",
+          [
+            "string",
+            "green"
+          ]
+        ],
+        "'green'\n  "
+      ],
+      [
+        "qmlobjdef",
+        "border",
+        "width",
+        [
+          "stat",
+          [
+            "num",
+            2
+          ]
+        ],
+        "2\n\n  "
+      ],
+      [
+        "qmlpropdef",
+        "number",
+        "int",
+        [
+          "stat",
+          [
+            "num",
+            10
+          ]
+        ],
+        "10\n  "
+      ],
+      [
+        "qmlpropdef",
+        "foo",
+        "var",
+        [
+          "block",
+          []
+        ],
+        "{}\n  "
+      ],
+      [
+        "qmlpropdef",
+        "bar",
+        "var",
+        [
+          "stat",
+          [
+            "array",
+            [],
+            "[]\n  "
+          ]
+        ],
+        "[]\n  "
+      ],
+      [
+        "qmlpropdef",
+        "item",
+        "Item",
+        [
+          "stat",
+          [
+            "qmlelem",
+            "Item",
+            null,
+            []
+          ]
+        ],
+        "Item {}\n"
+      ]
+    ]
+  ]
+]
