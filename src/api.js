@@ -96,7 +96,7 @@ function tokenizer_($TEXT) {
   // Override UglifyJS methods
 
   parse_error = function(err) {
-    throw new QMLParseError(err, S.tokline, S.tokcol, S.tokpos, extractLinesForErrorDiag( S.text, S.tokline ) );
+    throw new QMLParseError(err, S.tokline, S.tokcol, S.tokpos, extractLinesForErrorDiag(S.text, S.tokline));
   };
 
   // WARNING: Here the original tokenizer() code gets embedded
@@ -189,7 +189,8 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
     expect("{");
     var a = [];
     while (!is("punc", "}")) {
-      if (is("eof")) unexpected();
+      if (is("eof"))
+        unexpected();
       a.push(qmlstatement());
     }
     expect("}");
@@ -219,16 +220,14 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
     if (is("punc", ":")) {
       next();
       S.in_function++;
-      var from = S.token.pos,
-        stat = statement(),
-        to = S.token.pos;
+      var from = S.token.pos;
+      var stat = statement();
+      var to = S.token.pos;
       S.in_function--;
-      return as("qmlpropdef", name, type, stat,
-          S.text.substr(from, to - from));
+      return as("qmlpropdef", name, type, stat, S.text.substr(from, to - from));
     } else if (is("punc", ";"))
       next();
     return as("qmlpropdef", name, type);
-
   }
 
   function qmldefaultprop() {
@@ -245,7 +244,10 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
       next();
       var first = true;
       while (!is("punc", ")")) {
-        if (first) first = false; else expect(",");
+        if (first)
+          first = false;
+        else
+          expect(",");
         if (!is("name"))
           unexpected();
         var type = S.token.value;
@@ -260,7 +262,6 @@ function qmlweb_parse_($TEXT, document_type, exigent_mode, embed_tokens) {
     if (is("punc", ";"))
       next();
     return as("qmlsignaldef", name, args);
-
   }
 
   function qmlstatement() {
