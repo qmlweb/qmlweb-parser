@@ -37,7 +37,6 @@ gulp.task('build-covered-api', function() {
   return gulp.src(['src/api.js'])
     .pipe(istanbul())
     .pipe(concat('api.covered.js'))
-    .pipe(changed('./tmp'))
     .pipe(gulp.dest('./tmp'));
 });
 
@@ -57,7 +56,6 @@ gulp.task('build-covered', ['build-covered-api'], function() {
       params: ['exports'],
       args: ['typeof exports !== \'undefined\' ? exports : window']
     }))
-    .pipe(changed('./tmp'))
     .pipe(gulp.dest('./tmp'));
 });
 
