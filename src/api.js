@@ -276,38 +276,35 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
           next();
         }
         return as("qmlelem", propname, onProp, qmlblock());
-      } else {
-        // property statement
-        if (is("punc", ".")) {
-          // anchors, fonts etc, a.b: statement;
-          // Can also be Component.onCompleted: ...
-          // Assume only one subproperty
-          next();
-          var subname = S.token.value;
-          next();
-          /* Check for ModuleQualifier.QMLElement */
-          if (qml_is_element(subname)) {
-            return as("qmlelem", propname + "." + subname, undefined, qmlblock());
-          }
-          expect(":");
-          S.in_function++;
-          var from = S.token.pos;
-          var stat = statement();
-          var to = S.token.pos;
-          S.in_function--;
-          return as("qmlobjdef", propname, subname, stat, S.text.substr(from, to - from));
-        } else if (is("punc", "{")) {
-          return as("qmlobj", propname, qmlblock());
-        } else {
-          // Evaluatable item
-          expect(":");
-          S.in_function++;
-          var from = S.token.pos;
-          var stat = statement();
-          var to = S.token.pos;
-          S.in_function--;
-          return as("qmlprop", propname, stat, S.text.substr(from, to - from));
+      } else if (is("punc", ".")) { // property statement
+        // anchors, fonts etc, a.b: statement;
+        // Can also be Component.onCompleted: ...
+        // Assume only one subproperty
+        next();
+        var subname = S.token.value;
+        next();
+        /* Check for ModuleQualifier.QMLElement */
+        if (qml_is_element(subname)) {
+          return as("qmlelem", propname + "." + subname, undefined, qmlblock());
         }
+        expect(":");
+        S.in_function++;
+        var from = S.token.pos;
+        var stat = statement();
+        var to = S.token.pos;
+        S.in_function--;
+        return as("qmlobjdef", propname, subname, stat, S.text.substr(from, to - from));
+      } else if (is("punc", "{")) {
+        return as("qmlobj", propname, qmlblock());
+      } else {
+        // Evaluatable item
+        expect(":");
+        S.in_function++;
+        var from = S.token.pos;
+        var stat = statement();
+        var to = S.token.pos;
+        S.in_function--;
+        return as("qmlprop", propname, stat, S.text.substr(from, to - from));
       }
     } else if (is("keyword", "default")) {
       return qmldefaultprop();
