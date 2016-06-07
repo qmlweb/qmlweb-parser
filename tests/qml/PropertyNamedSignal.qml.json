@@ -1,0 +1,31 @@
+[
+  "toplevel",
+  [
+    [
+      "qmlimport",
+      "QtQuick",
+      2.5,
+      "",
+      true
+    ]
+  ],
+  [
+    "qmlelem",
+    "ItemWithPropertyNamedSignal",
+    null,
+    [
+      [
+        "qmlprop",
+        "signal",
+        [
+          "stat",
+          [
+            "num",
+            20
+          ]
+        ],
+        "20\n"
+      ]
+    ]
+  ]
+]

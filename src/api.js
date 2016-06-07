@@ -257,7 +257,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       next();
       if (is("punc", ":")) {
         next();
-        return as_statement("qmlprop", propname);
+        return as_statement("qmlprop", "signal");
       } else {
         return qmlsignaldef();
       }
