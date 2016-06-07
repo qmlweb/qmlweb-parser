@@ -1,0 +1,6 @@
+{
+  "error": {
+    "name": "Error",
+    "message": "Unexpected token: punc (}) (line: 5, col: 0, pos: 61)\n  2  \n  3  Item {\n  4    property alias buttonText: asd.\n>>5  }\n  6  \n\n"
+  }
+}

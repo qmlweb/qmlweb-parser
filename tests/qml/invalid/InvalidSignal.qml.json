@@ -1,0 +1,6 @@
+{
+  "error": {
+    "name": "Error",
+    "message": "Unexpected token: punc ()) (line: 4, col: 38, pos: 65)\n  1  import QtQuick 2.0\n  2  \n  3  Item {\n>>4    signal simpleSignal(string abc, bool)\n  5  }\n  6  \n\n"
+  }
+}
