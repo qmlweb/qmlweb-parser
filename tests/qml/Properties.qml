@@ -6,7 +6,10 @@ Rectangle {
   color: 'green'
   border.width: 2
 
+  property bool flag
+  property int integer;
   property int number: 10
+  property int number2: 10;
   property var foo: {}
   property var bar: []
   property Item item: Item {}
