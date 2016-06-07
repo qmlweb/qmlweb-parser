@@ -1,0 +1,6 @@
+{
+  "error": {
+    "name": "Error",
+    "message": "Unexpected token: num (200) (line: 4, col: 20, pos: 47)\n  1  import QtQuick 2.0\n  2  \n  3  Item {\n>>4    property alias x: 200\n  5  }\n  6  \n\n"
+  }
+}
