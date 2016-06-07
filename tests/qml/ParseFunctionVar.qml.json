@@ -1,0 +1,53 @@
+[
+  "toplevel",
+  [
+    [
+      "qmlimport",
+      "QtQuick",
+      2,
+      "",
+      true
+    ]
+  ],
+  [
+    "qmlelem",
+    "Item",
+    null,
+    [
+      [
+        "qmlpropdef",
+        "aFunction",
+        "var",
+        [
+          "function",
+          null,
+          [],
+          []
+        ],
+        "function(){}\n  "
+      ],
+      [
+        "qmlpropdef",
+        "bFunction",
+        "var",
+        [
+          "function",
+          null,
+          [
+            "h"
+          ],
+          [
+            [
+              "return",
+              [
+                "num",
+                21
+              ]
+            ]
+          ]
+        ],
+        "function(h) {\n    return 21;\n  }\n"
+      ]
+    ]
+  ]
+]

@@ -119,11 +119,21 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
 
   var statement_js = statement;
   statement = function() {
+    var in_qmlpropdef = !!statement.in_qmlpropdef;
+    statement.in_qmlpropdef = false;
     switch (S.token.type) {
     case "punc":
       switch (S.token.value) {
       case ".":
         return is_token(peek(), "name", "pragma") ? qml_pragma_statement() : unexpected();
+      }
+    case "keyword":
+      switch (S.token.value) {
+      case "function":
+        if (in_qmlpropdef) {
+          next();
+          return function_(false);
+        }
       }
     }
     return statement_js();
@@ -205,6 +215,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     }
     if (is("punc", ":")) {
       next();
+      statement.in_qmlpropdef = true;
       return as_statement("qmlpropdef", name, type);
     } else if (is("punc", ";"))
       next();
