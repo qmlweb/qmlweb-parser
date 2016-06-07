@@ -91,14 +91,12 @@ function qmlweb_tokenizer($TEXT) {
 function qmlweb_parse($TEXT, document_type, exigent_mode) {
   var embed_tokens = false; // embed_tokens option is not supported
 
-  var TEXT_ORIG = $TEXT;
+  var TEXT = $TEXT.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
   $TEXT = qmlweb_tokenizer($TEXT, true);
 
   // WARNING: Here the original parse() code gets embedded
   parse($TEXT,exigent_mode,false);
   // NOTE: Don't insert spaces between arguments!
-
-  S.text = TEXT_ORIG.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
 
   // Override UglifyJS methods
 
@@ -108,7 +106,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       line != null ? line : ctx.tokline,
       col != null ? col : ctx.tokcol,
       pos != null ? pos : ctx.tokpos,
-      S.text
+      TEXT
     );
   };
 
@@ -135,7 +133,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     var from = S.token.pos;
     var stat = expr_list("]", !exigent_mode, true);
     var to = S.token.pos;
-    return as("array", stat, "[" + S.text.substr(from, to - from));
+    return as("array", stat, "[" + TEXT.substr(from, to - from));
   };
 
   expression = function(commas, no_in) {
@@ -158,7 +156,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     res.push(statement());
     var end = S.token.pos;
     S.in_function--;
-    res.push(S.text.substr(start, end - start));
+    res.push(TEXT.substr(start, end - start));
     return res;
   }
 
@@ -254,7 +252,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       var stat = function_(true);
       var to = S.token.pos;
       var name = stat[1];
-      return as("qmlmethod", name, stat, S.text.substr(from, to - from));
+      return as("qmlmethod", name, stat, TEXT.substr(from, to - from));
     } else if (is("name", "signal")) {
       next();
       if (is("punc", ":")) {
