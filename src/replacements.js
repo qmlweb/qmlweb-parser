@@ -1,6 +1,6 @@
 'use strict';
 
-const uglify = require('uglify-js/lib/parse-js');
+const uglify = require('uglify-js');
 
 function source(fn) {
   return Function.prototype.toString.call(fn)
@@ -12,9 +12,10 @@ function source(fn) {
 }
 
 const tokenizer = source(uglify.tokenizer);
-const parse = source(uglify.parse).split('return as("toplevel"')[0];
+const parse = source(uglify.parse).split('return (function(){')[0];
 
 module.exports = [
   { from: 'return tokenizer($TEXT);', to: tokenizer },
+  //{ from: 'aasdASDASasdf', to: '' },
   { from: 'parse($TEXT,exigent_mode,false);', to: parse }
 ];

@@ -83,22 +83,26 @@ function qmlweb_tokenizer($TEXT) {
   parse_error = function(err) {
     throw new QMLParseError(err, S.tokline, S.tokcol, S.tokpos, S.text);
   };
+  var filename, html5_comments, shebang;
 
   // WARNING: Here the original tokenizer() code gets embedded
   return tokenizer($TEXT);
 }
 
 function qmlweb_parse($TEXT, document_type, exigent_mode) {
-  var embed_tokens = false; // embed_tokens option is not supported
-
   var TEXT = $TEXT.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
-  $TEXT = qmlweb_tokenizer($TEXT, true);
+  $TEXT = qmlweb_tokenizer($TEXT);
+  var options;
 
   // WARNING: Here the original parse() code gets embedded
   parse($TEXT,exigent_mode,false);
   // NOTE: Don't insert spaces between arguments!
 
   // Override UglifyJS methods
+
+  embed_tokens = function(parser) {
+    return parser;
+  };
 
   croak = function(msg, line, col, pos) {
     var ctx = S.input.context();
@@ -118,7 +122,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
   };
 
   var statement_js = statement;
-  statement = function() {
+  statement = embed_tokens(function() {
     switch (S.token.type) {
     case "punc":
       switch (S.token.value) {
@@ -127,7 +131,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       }
     }
     return statement_js();
-  };
+  });
 
   array_ = function() {
     var from = S.token.pos;
@@ -148,6 +152,10 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
   };
 
   // QML-specific methods
+
+  function as() {
+    return slice(arguments);
+  }
 
   function as_statement() {
     var res = slice(arguments);
@@ -363,11 +371,23 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     next();
   }
 
+  var tree;
   if (document_type === qmlweb_parse.JSResource) {
-    return jsdocument();
+    tree = jsdocument();
   } else {
-    return qmldocument();
+    tree = qmldocument();
   }
+  return two2one(tree);
+}
+
+function two2one(tree) {
+  if (tree == null || typeof tree !== 'object')
+    return tree;
+
+  for (var key in tree) {
+    tree[key] = two2one(tree[key]);
+  }
+  return tree;
 }
 
 qmlweb_parse.nowParsingFile = ''; // TODO: make a parameter of qmlweb_parse
