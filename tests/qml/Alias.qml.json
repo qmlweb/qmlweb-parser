@@ -1,0 +1,56 @@
+[
+  "toplevel",
+  [
+    [
+      "qmlimport",
+      "QtQuick",
+      2,
+      "",
+      true
+    ]
+  ],
+  [
+    "qmlelem",
+    "Item",
+    null,
+    [
+      [
+        "qmlaliasdef",
+        "childX",
+        "child",
+        "x"
+      ],
+      [
+        "qmlelem",
+        "Item",
+        null,
+        [
+          [
+            "qmlprop",
+            "id",
+            [
+              "stat",
+              [
+                "name",
+                "child"
+              ]
+            ],
+            "child\n    "
+          ],
+          [
+            "qmlprop",
+            "x",
+            [
+              "stat",
+              [
+                "num",
+                125
+              ]
+            ],
+            "125\n  "
+          ]
+        ]
+      ]
+    ]
+  ]
+]
