@@ -1,0 +1,48 @@
+[
+  "toplevel",
+  [
+    [
+      "qmlimport",
+      "QtQuick",
+      2,
+      "",
+      true
+    ]
+  ],
+  [
+    "qmlelem",
+    "Item",
+    null,
+    [
+      [
+        "qmlsignaldef",
+        "simpleSignal",
+        []
+      ],
+      [
+        "qmlsignaldef",
+        "signalWithParams",
+        [
+          {
+            "type": "string",
+            "name": "someParam"
+          }
+        ]
+      ],
+      [
+        "qmlsignaldef",
+        "anotherSignal",
+        [
+          {
+            "type": "string",
+            "name": "someParam"
+          },
+          {
+            "type": "int",
+            "name": "param2"
+          }
+        ]
+      ]
+    ]
+  ]
+]
