@@ -1,3 +1,5 @@
+'use strict';
+
 const uglify = require('uglify-js/lib/parse-js');
 
 function source(fn) {

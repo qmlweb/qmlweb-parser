@@ -36,9 +36,9 @@ for (const dir in tree) {
 
   const files = tree[dir];
 
-  test(dir.replace(/tests./, ''), function (t) {
+  test(dir.replace(/tests./, ''), function(t) {
     t.plan(files.filter(function(x) {
-      return !/\.json$/.test(x)
+      return !/\.json$/.test(x);
     }).length);
 
     for (const file of files) {
@@ -46,16 +46,16 @@ for (const dir in tree) {
       let type;
 
       switch (extension) {
-        case 'json':
-          continue;
-        case 'qml':
-          type = parser.qmlweb_parse.QMLDocument;
-          break;
-        case 'js':
-          type = parser.qmlweb_parse.JSResource;
-          break;
-        default:
-          throw new Error('Unexpected file extension: ' + extension);
+      case 'json':
+        continue;
+      case 'qml':
+        type = parser.qmlweb_parse.QMLDocument;
+        break;
+      case 'js':
+        type = parser.qmlweb_parse.JSResource;
+        break;
+      default:
+        throw new Error('Unexpected file extension: ' + extension);
       }
 
       const filePath = path.join(dir, file);
@@ -82,4 +82,3 @@ for (const dir in tree) {
     }
   });
 }
-

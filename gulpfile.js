@@ -1,3 +1,5 @@
+'use strict';
+
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const replace = require('gulp-replace');
@@ -15,7 +17,7 @@ const replacements = require('./src/replacements');
 const sources = [
   'src/header.js',
   'node_modules/uglify-js/lib/parse-js.js',
-  'src/api.js',
+  'src/api.js'
 ];
 
 gulp.task('test', ['build'], function() {
@@ -42,10 +44,11 @@ gulp.task('build-covered-api', function() {
 
 gulp.task('build-covered', ['build-covered-api'], function() {
   process.env.QMLWEB_PARSER_PATH = 'tmp/qmlweb.parser.covered';
-  return gulp.src([
+  return gulp.src(
+    [
       'src/header.js',
       'node_modules/uglify-js/lib/parse-js.js',
-      'tmp/api.covered.js',
+      'tmp/api.covered.js'
     ])
     .pipe(order(sources, { base: __dirname }))
     .pipe(replace(replacements[0].from, replacements[0].to))
