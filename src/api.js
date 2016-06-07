@@ -151,6 +151,17 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
 
   // QML-specific methods
 
+  function as_statement() {
+    var res = slice(arguments);
+    S.in_function++;
+    var start = S.token.pos;
+    res.push(statement());
+    var end = S.token.pos;
+    S.in_function--;
+    res.push(S.text.substr(start, end - start));
+    return res;
+  }
+
   function maybe_qmlelem(no_in) {
     var expr = maybe_assign(no_in);
     if (is("punc", "{"))
@@ -196,12 +207,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     }
     if (is("punc", ":")) {
       next();
-      S.in_function++;
-      var from = S.token.pos;
-      var stat = statement();
-      var to = S.token.pos;
-      S.in_function--;
-      return as("qmlpropdef", name, type, stat, S.text.substr(from, to - from));
+      return as_statement("qmlpropdef", name, type);
     } else if (is("punc", ";"))
       next();
     return as("qmlpropdef", name, type);
@@ -253,12 +259,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       next();
       if (is("punc", ":")) {
         next();
-        S.in_function++;
-        var from = S.token.pos;
-        var stat = statement();
-        var to = S.token.pos;
-        S.in_function--;
-        return as("qmlprop", propname, stat, S.text.substr(from, to - from));
+        return as_statement("qmlprop", propname);
       } else {
         return qmlsignaldef();
       }
@@ -288,23 +289,13 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
           return as("qmlelem", propname + "." + subname, undefined, qmlblock());
         }
         expect(":");
-        S.in_function++;
-        var from = S.token.pos;
-        var stat = statement();
-        var to = S.token.pos;
-        S.in_function--;
-        return as("qmlobjdef", propname, subname, stat, S.text.substr(from, to - from));
+        return as_statement("qmlobjdef", propname, subname);
       } else if (is("punc", "{")) {
         return as("qmlobj", propname, qmlblock());
       } else {
         // Evaluatable item
         expect(":");
-        S.in_function++;
-        var from = S.token.pos;
-        var stat = statement();
-        var to = S.token.pos;
-        S.in_function--;
-        return as("qmlprop", propname, stat, S.text.substr(from, to - from));
+        return as_statement("qmlprop", propname);
       }
     } else if (is("keyword", "default")) {
       return qmldefaultprop();
