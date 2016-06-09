@@ -42,6 +42,16 @@
             "name": "param2"
           }
         ]
+      ],
+      [
+        "qmlsignaldef",
+        "signalWithParamVar",
+        [
+          {
+            "type": "var",
+            "name": "param"
+          }
+        ]
       ]
     ]
   ]

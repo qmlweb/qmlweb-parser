@@ -240,7 +240,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
           first = false;
         else
           expect(",");
-        if (!is("name"))
+        if (!is("name") && !is('keyword', 'var'))
           unexpected();
         var type = S.token.value;
         next();
