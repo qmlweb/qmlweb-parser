@@ -37,22 +37,32 @@ for (const dir in tree) {
   const files = tree[dir];
 
   test(dir.replace(/tests./, ''), function(t) {
-    t.plan(files.filter(function(x) {
-      return !/\.json$/.test(x);
-    }).length);
+    t.plan(
+      files.filter(function(x) {
+        return !/\.json$/.test(x);
+      }).length +
+      files.filter(function(x) {
+        return /\.js$/.test(x);
+      }).length
+    );
 
     for (const file of files) {
       const extension = file.replace(/.*\./, '');
-      let type;
+      const map = {};
 
       switch (extension) {
       case 'json':
         continue;
       case 'qml':
-        type = parser.qmlweb_parse.QMLDocument;
+        map['.json'] = function(source) {
+          return parser.qmlweb_parse(source, parser.qmlweb_parse.QMLDocument);
+        };
         break;
       case 'js':
-        type = parser.qmlweb_parse.JSResource;
+        map['.json'] = function(source) {
+          return parser.qmlweb_parse(source, parser.qmlweb_parse.JSResource);
+        };
+        map['.exports.json'] = parser.qmlweb_jsparse;
         break;
       default:
         throw new Error('Unexpected file extension: ' + extension);
@@ -60,25 +70,30 @@ for (const dir in tree) {
 
       const filePath = path.join(dir, file);
       const source = fs.readFileSync(filePath, 'utf-8');
-      let actual, expected;
-      try {
-        actual = parser.qmlweb_parse(source, type);
-      } catch (e) {
-        actual = { error: { name: e.name, message: e.message } };
-      }
 
-      // Normalize. NOTE: this translates undefined to null
-      actual = JSON.parse(JSON.stringify(actual));
+      Object.keys(map).forEach(function(suffix) {
+        const func = map[suffix];
 
-      if (saveMode && files.indexOf(file + '.json') === -1) {
-        const json = JSON.stringify(actual, undefined, 2);
-        fs.writeFileSync(filePath + '.json', json);
-      }
+        let actual, expected;
+        try {
+          actual = func(source);
+        } catch (e) {
+          actual = { error: { name: e.name, message: e.message } };
+        }
 
-      const content = fs.readFileSync(filePath + '.json', 'utf-8');
-      expected = JSON.parse(content);
+        // Normalize. NOTE: this translates undefined to null
+        actual = JSON.parse(JSON.stringify(actual));
 
-      t.deepEqual(actual, expected, file.replace(/.*[\\\/]/, ''));
+        if (saveMode && files.indexOf(file + suffix) === -1) {
+          const json = JSON.stringify(actual, undefined, 2);
+          fs.writeFileSync(filePath + suffix, json);
+        }
+
+        const content = fs.readFileSync(filePath + suffix, 'utf-8');
+        expected = JSON.parse(content);
+
+        t.deepEqual(actual, expected, file.replace(/.*[\\\/]/, ''));
+      });
     }
   });
 }

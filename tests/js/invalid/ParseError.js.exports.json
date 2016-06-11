@@ -1,0 +1,6 @@
+{
+  "error": {
+    "name": "Error",
+    "message": "Unterminated string constant (line: 5, col: 7, pos: 49)\n  2  \n  3  function test() {\n  4    if (x) {\n>>5      ret'urn 20;\n  6    } else {\n  7    }\n  8  }\n\n"
+  }
+}

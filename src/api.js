@@ -385,4 +385,25 @@ qmlweb_parse.nowParsingFile = ''; // TODO: make a parameter of qmlweb_parse
 qmlweb_parse.QMLDocument = 1;
 qmlweb_parse.JSResource = 2;
 
+function qmlweb_jsparse(source) {
+  var obj = { exports: [], source: source };
+  var AST_Tree = qmlweb_parse(source, qmlweb_parse.JSResource);
+  var main_scope = AST_Tree[1];
+
+  for (var i = 0 ; i < main_scope.length ; ++i) {
+    var item = main_scope[i];
+
+    switch (item[0]) {
+      case "var":
+        obj.exports.push(item[1][0][0]);
+        break ;
+      case "defun":
+        obj.exports.push(item[1]);
+        break ;
+    }
+  }
+  return obj;
+}
+
 exports.qmlweb_parse = qmlweb_parse;
+exports.qmlweb_jsparse = qmlweb_jsparse;

@@ -1,0 +1,6 @@
+{
+  "error": {
+    "name": "Error",
+    "message": "Unexpected token: num (20) (line: 5, col: 12, pos: 54)\n  2  \n  3  function test() {\n  4    if (x) {\n>>5      retudrn 20;\n  6    } else {\n  7    }\n  8  }\n\n"
+  }
+}

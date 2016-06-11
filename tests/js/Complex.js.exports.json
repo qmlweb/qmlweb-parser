@@ -1,0 +1,8 @@
+{
+  "exports": [
+    "func",
+    "func2",
+    "info"
+  ],
+  "source": "function func() {\n  variable++;\n}\n\nfunction func2() {\n  return variable || 'Error';\n}\n\nvar info = {\n  version: 42\n};\n\n"
+}

@@ -1,0 +1,6 @@
+{
+  "exports": [
+    "variable"
+  ],
+  "source": ".pragma library\n\nvar variable = 0;\n"
+}

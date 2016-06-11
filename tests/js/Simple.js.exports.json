@@ -1,0 +1,7 @@
+{
+  "exports": [
+    "importedTest",
+    "importedColor"
+  ],
+  "source": "function importedTest(x) {\n  return x + x;\n}\n\nvar importedColor = 'magenta';\n"
+}
