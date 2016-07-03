@@ -277,15 +277,6 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       next();
       if (propname == "property" && (S.token.type == "name" || S.token.value == "var")) {
         return qmlpropdef();
-      } else if (qml_is_element(propname) && !is("punc", ".")) {
-        // Element
-        var onProp;
-        if (is("name", "on")) {
-          next();
-          onProp = S.token.value;
-          next();
-        }
-        return as("qmlelem", propname, onProp, qmlblock());
       } else if (is("punc", ".")) { // property statement
         // anchors, fonts etc, a.b: statement;
         // Can also be Component.onCompleted: ...
@@ -299,6 +290,15 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
         }
         expect(":");
         return as_statement("qmlobjdef", propname, subname);
+      } else if (qml_is_element(propname)) {
+        // Element
+        var onProp;
+        if (is("name", "on")) {
+          next();
+          onProp = S.token.value;
+          next();
+        }
+        return as("qmlelem", propname, onProp, qmlblock());
       } else if (is("punc", "{")) {
         return as("qmlobj", propname, qmlblock());
       } else {
