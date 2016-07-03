@@ -161,9 +161,8 @@
             "30\n    "
           ],
           [
-            "qmlobjdef",
-            "border",
-            "width",
+            "qmlprop",
+            "border.width",
             [
               "stat",
               [
