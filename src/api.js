@@ -280,16 +280,19 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       } else if (is("punc", ".")) { // property statement
         // anchors, fonts etc, a.b: statement;
         // Can also be Component.onCompleted: ...
-        // Assume only one subproperty
-        next();
-        var subname = S.token.value;
-        next();
+        var fullname = propname;
+        while (is("punc", ".")) {
+          next();
+          var subname = S.token.value;
+          fullname += '.' + subname;
+          next();
+        }
         /* Check for ModuleQualifier.QMLElement */
         if (qml_is_element(subname)) {
-          return as("qmlelem", propname + "." + subname, undefined, qmlblock());
+          return as("qmlelem", fullname, undefined, qmlblock());
         }
         expect(":");
-        return as_statement("qmlobjdef", propname, subname);
+        return as_statement("qmlprop", fullname);
       } else if (qml_is_element(propname)) {
         // Element
         var onProp;
