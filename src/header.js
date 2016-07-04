@@ -3,3 +3,4 @@
  * under BSD-2-Clause license (text follows). Each part has a separate header.
  */
 
+var parse, tokenizer;

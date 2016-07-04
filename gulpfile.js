@@ -53,6 +53,8 @@ gulp.task('build-covered', ['build-covered-api'], function() {
     .pipe(order(sources, { base: __dirname }))
     .pipe(replace(replacements[0].from, replacements[0].to))
     .pipe(replace(replacements[1].from, replacements[1].to))
+    .pipe(replace(replacements[2].from, replacements[2].to))
+    .pipe(replace(replacements[3].from, replacements[3].to))
     .pipe(concat('qmlweb.parser.covered.js'))
     .pipe(iife({
       useStrict: false,
@@ -68,6 +70,8 @@ gulp.task('build-dev', function() {
     .pipe(sourcemaps.init())
     .pipe(replace(replacements[0].from, replacements[0].to))
     .pipe(replace(replacements[1].from, replacements[1].to))
+    .pipe(replace(replacements[2].from, replacements[2].to))
+    .pipe(replace(replacements[3].from, replacements[3].to))
     .pipe(concat('qmlweb.parser.js'))
     .pipe(iife({
       useStrict: false,
