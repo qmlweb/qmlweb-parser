@@ -405,5 +405,10 @@ function qmlweb_jsparse(source) {
   return obj;
 }
 
-exports.qmlweb_parse = qmlweb_parse;
-exports.qmlweb_jsparse = qmlweb_jsparse;
+if (typeof QmlWeb !== 'undefined') {
+  QmlWeb.parse = qmlweb_parse;
+  QmlWeb.jsparse = qmlweb_jsparse;
+} else {
+  exports.qmlweb_parse = qmlweb_parse;
+  exports.qmlweb_jsparse = qmlweb_jsparse;
+}
