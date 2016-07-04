@@ -405,10 +405,18 @@ function qmlweb_jsparse(source) {
   return obj;
 }
 
-if (typeof QmlWeb !== 'undefined') {
+if (typeof window !== 'undefined') {
+  // Browser: export only QmlWeb.parse and QmlWeb.jsparse
+  if (typeof QmlWeb === 'undefined') {
+    window.QmlWeb = {};
+  }
   QmlWeb.parse = qmlweb_parse;
   QmlWeb.jsparse = qmlweb_jsparse;
 } else {
-  exports.qmlweb_parse = qmlweb_parse;
-  exports.qmlweb_jsparse = qmlweb_jsparse;
+  // Node.js
+  module.exports.parse = qmlweb_parse;
+  module.exports.jsparse = qmlweb_jsparse;
+  // Legacy
+  module.exports.qmlweb_parse = qmlweb_parse;
+  module.exports.qmlweb_jsparse = qmlweb_jsparse;
 }

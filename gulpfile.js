@@ -57,7 +57,7 @@ gulp.task('build-covered', ['build-covered-api'], function() {
     .pipe(iife({
       useStrict: false,
       params: ['exports'],
-      args: ['typeof exports !== \'undefined\' ? exports : window']
+      args: ['{}']
     }))
     .pipe(gulp.dest('./tmp'));
 });
@@ -72,7 +72,7 @@ gulp.task('build-dev', function() {
     .pipe(iife({
       useStrict: false,
       params: ['exports'],
-      args: ['typeof exports !== \'undefined\' ? exports : window']
+      args: ['{}']
     }))
     .pipe(changed('./lib'))
     .pipe(sourcemaps.write('./'))
