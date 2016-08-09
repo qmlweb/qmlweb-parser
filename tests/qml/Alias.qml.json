@@ -15,10 +15,42 @@
     null,
     [
       [
-        "qmlaliasdef",
+        "qmlpropdef",
         "childX",
-        "child",
-        "x"
+        "alias",
+        [
+          "stat",
+          [
+            "dot",
+            [
+              "name",
+              "child"
+            ],
+            "x"
+          ]
+        ],
+        "child.x\n  "
+      ],
+      [
+        "qmlpropdef",
+        "textFontPointSize",
+        "alias",
+        [
+          "stat",
+          [
+            "dot",
+            [
+              "dot",
+              [
+                "name",
+                "text"
+              ],
+              "font"
+            ],
+            "pointSize"
+          ]
+        ],
+        "text.font.pointSize\n\n  "
       ],
       [
         "qmlelem",
@@ -48,6 +80,25 @@
               ]
             ],
             "125\n  "
+          ]
+        ]
+      ],
+      [
+        "qmlelem",
+        "Text",
+        null,
+        [
+          [
+            "qmlprop",
+            "id",
+            [
+              "stat",
+              [
+                "name",
+                "text"
+              ]
+            ],
+            "text\n  "
           ]
         ]
       ]

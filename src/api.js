@@ -205,16 +205,8 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       expect(":");
       if (!is("name"))
         unexpected();
-      var objName = S.token.value;
-      next();
-      if (is("punc", ".")) {
-        next();
-        if (!is("name"))
-          unexpected();
-        var propName = S.token.value;
-        next();
-      }
-      return as("qmlaliasdef", name, objName, propName);
+      statement.in_qmlpropdef = true;
+      return as_statement("qmlpropdef", name, type);
     }
     if (is("punc", ":")) {
       next();
