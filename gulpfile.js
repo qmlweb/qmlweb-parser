@@ -17,6 +17,7 @@ const replacements = require('./src/replacements');
 const sources = [
   'src/header.js',
   'node_modules/uglify-js/lib/parse-js.js',
+  'src/uglify-js-process.js',
   'src/api.js'
 ];
 
@@ -48,6 +49,7 @@ gulp.task('build-covered', ['build-covered-api'], function() {
     [
       'src/header.js',
       'node_modules/uglify-js/lib/parse-js.js',
+      'src/uglify-js-process.js',
       'tmp/api.covered.js'
     ])
     .pipe(order(sources, { base: __dirname }))

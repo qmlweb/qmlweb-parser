@@ -117,6 +117,24 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     token_error(S.token, "Unexpected token " + S.token.type + " " + S.token.val + ", expected " + type + " " + val);
   };
 
+  function qml_get_attached_object(type, val) {
+      if (type === "name" && qml_is_element(val)) {
+          return "$QmlWebGetAttachedObject('" + val + "')";
+      }
+      return val
+  }
+
+  var subscripts_js = subscripts;
+  subscripts = function(expr, allow_calls) {
+      if (is("punc", ".")) {
+          next();
+          expr[1] = qml_get_attached_object(expr[0], expr[1]);
+          S.token.value = qml_get_attached_object(S.token.type, S.token.value);
+          return subscripts(as("dot", expr, as_name()), allow_calls);
+      }
+      return subscripts_js(expr, allow_calls);
+  };
+
   var statement_js = statement;
   statement = function() {
     var in_qmlpropdef = !!statement.in_qmlpropdef;
@@ -161,12 +179,15 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
 
   function as_statement() {
     var res = slice(arguments);
+    var src = "";
     S.in_function++;
     var start = S.token.pos;
-    res.push(statement());
+    var s = statement();
+    res.push(s);
+    src += gen_code(s);
     var end = S.token.pos;
     S.in_function--;
-    res.push(TEXT.substr(start, end - start));
+    res.push(src);
     return res;
   }
 
