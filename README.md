@@ -1,6 +1,6 @@
 # QML parser in JavaScript
 
-[![Join the chat at https://gitter.im/qmlweb/qmlweb](https://badges.gitter.im/qmlweb/qmlweb.svg)](https://gitter.im/qmlweb/qmlweb?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/qmlweb/qmlweb](https://badges.gitter.im/qmlweb/qmlweb.svg)](https://gitter.im/qmlweb/qmlweb)
 [![Build Status](https://travis-ci.org/qmlweb/qmlweb-parser.svg?branch=master)](https://travis-ci.org/qmlweb/qmlweb-parser)
 [![codecov](https://codecov.io/gh/qmlweb/qmlweb-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/qmlweb/qmlweb-parser)
 
