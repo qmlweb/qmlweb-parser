@@ -51,9 +51,12 @@
         "'green'\n  "
       ],
       [
-        "qmlobjdef",
-        "border",
-        "width",
+        "qmlprop",
+        [
+          "dot",
+          "border",
+          "width"
+        ],
         [
           "stat",
           [

@@ -177,8 +177,11 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     return expr;
   }
 
-  function qml_is_element(str) {
-    return str[0].toUpperCase() == str[0];
+  function qml_is_element(name) {
+    if (typeof name === "string") {
+        return name[0].toUpperCase() === name[0];
+    }
+    return qml_is_element(name[1]) && name[2][0].toUpperCase() === name[2][0];
   }
 
   function qmlblock() {
@@ -273,24 +276,13 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
         return qmlsignaldef();
       }
     } else if (S.token.type == "name") {
-      var propname = S.token.value;
-      next();
-      if (propname == "property" && (S.token.type == "name" || S.token.value == "var")) {
+      if (S.token.value == "property" && (S.token.type == "name" || S.token.value == "var")) {
+        next();
         return qmlpropdef();
-      } else if (is("punc", ".")) { // property statement
-        // anchors, fonts etc, a.b: statement;
-        // Can also be Component.onCompleted: ...
-        // Assume only one subproperty
-        next();
-        var subname = S.token.value;
-        next();
-        /* Check for ModuleQualifier.QMLElement */
-        if (qml_is_element(subname)) {
-          return as("qmlelem", propname + "." + subname, undefined, qmlblock());
-        }
-        expect(":");
-        return as_statement("qmlobjdef", propname, subname);
-      } else if (qml_is_element(propname)) {
+      }
+
+      var propname = subscripts(as_name(), false);
+      if (qml_is_element(propname)) {
         // Element
         var onProp;
         if (is("name", "on")) {

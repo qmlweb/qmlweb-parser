@@ -25,7 +25,11 @@
   ],
   [
     "qmlelem",
-    "DOM.Div",
+    [
+      "dot",
+      "DOM",
+      "Div"
+    ],
     null,
     []
   ]
