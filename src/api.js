@@ -397,6 +397,14 @@ function qmlweb_jsparse(source) {
   return obj;
 }
 
+if (typeof module !== 'undefined' && module.exports) {
+  // Node.js
+  module.exports.parse = qmlweb_parse;
+  module.exports.jsparse = qmlweb_jsparse;
+  // Legacy
+  module.exports.qmlweb_parse = qmlweb_parse;
+  module.exports.qmlweb_jsparse = qmlweb_jsparse;
+}
 if (typeof window !== 'undefined') {
   // Browser: export only QmlWeb.parse and QmlWeb.jsparse
   if (typeof QmlWeb === 'undefined') {
@@ -404,11 +412,4 @@ if (typeof window !== 'undefined') {
   }
   QmlWeb.parse = qmlweb_parse;
   QmlWeb.jsparse = qmlweb_jsparse;
-} else {
-  // Node.js
-  module.exports.parse = qmlweb_parse;
-  module.exports.jsparse = qmlweb_jsparse;
-  // Legacy
-  module.exports.qmlweb_parse = qmlweb_parse;
-  module.exports.qmlweb_jsparse = qmlweb_jsparse;
 }
