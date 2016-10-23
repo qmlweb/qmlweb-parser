@@ -5,6 +5,7 @@ Rectangle {
   height: 15
   color: 'green'
   border.width: 2
+  property: 'test'
 
   property bool flag
   property int integer;

@@ -64,7 +64,19 @@
             2
           ]
         ],
-        "2\n\n  "
+        "2\n  "
+      ],
+      [
+        "qmlprop",
+        "property",
+        [
+          "stat",
+          [
+            "string",
+            "test"
+          ]
+        ],
+        "'test'\n\n  "
       ],
       [
         "qmlpropdef",
