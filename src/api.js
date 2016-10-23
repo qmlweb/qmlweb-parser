@@ -276,7 +276,9 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
         return qmlsignaldef();
       }
     } else if (S.token.type == "name") {
-      if (S.token.value == "property" && (S.token.type == "name" || S.token.value == "var")) {
+      if (S.token.value == "property" && 
+          S.token.type == "name" && 
+          !is_token(peek(), "punc", ":")) {
         next();
         return qmlpropdef();
       }
