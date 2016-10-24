@@ -1,6 +1,6 @@
 {
   "name": "qmlweb-parser",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "QML parser in JavaScript",
   "license": "BSD-2-Clause",
   "repository": "qmlweb/qmlweb-parser",
