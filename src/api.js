@@ -378,7 +378,7 @@ qmlweb_parse.QMLDocument = 1;
 qmlweb_parse.JSResource = 2;
 
 function qmlweb_jsparse(source) {
-  var obj = { exports: [], source: source };
+  var obj = { pragma: [], exports: [], source: source };
   var AST_Tree = qmlweb_parse(source, qmlweb_parse.JSResource);
   var main_scope = AST_Tree[1];
 
@@ -391,6 +391,9 @@ function qmlweb_jsparse(source) {
         break ;
       case "defun":
         obj.exports.push(item[1]);
+        break ;
+      case "qmlpragma":
+        obj.pragma.push(item[1]);
         break ;
     }
   }
