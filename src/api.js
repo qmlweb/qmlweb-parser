@@ -352,6 +352,13 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     return as("qmlpragma", pragma);
   }
 
+  function qmlpragma() {
+    next();
+    var pragma = S.token.value;
+    next();
+    return as("qmlpragma", pragma);
+  }
+
   function qmlimport() {
     // todo
     next();
@@ -379,13 +386,22 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
 
   function qmldocument() {
     var imports = [];
-    while (is("name", "import")) {
-      imports.push(qmlimport());
+    var pragma = [];
+    while (true) {
+      if (is("name", "import")) {
+        imports.push(qmlimport());
+      } else if (is("name", "pragma")) {
+        pragma.push(qmlpragma());
+      } else {
+        break;
+      }
     }
     var root = qmlstatement();
     if (!is("eof"))
       unexpected();
-    return as("toplevel", imports, root);
+    return pragma.length > 0 ?
+      as("toplevel", imports, root, pragma) :
+      as("toplevel", imports, root);
   }
 
   function jsdocument() {

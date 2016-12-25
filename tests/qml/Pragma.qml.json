@@ -1,0 +1,24 @@
+[
+  "toplevel",
+  [
+    [
+      "qmlimport",
+      "QtQuick",
+      2,
+      "",
+      true
+    ]
+  ],
+  [
+    "qmlelem",
+    "Item",
+    null,
+    []
+  ],
+  [
+    [
+      "qmlpragma",
+      "Singleton"
+    ]
+  ]
+]
