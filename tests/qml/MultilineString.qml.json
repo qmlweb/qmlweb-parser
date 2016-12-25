@@ -1,0 +1,58 @@
+[
+  "toplevel",
+  [
+    [
+      "qmlimport",
+      "QtQuick",
+      2,
+      "",
+      true
+    ]
+  ],
+  [
+    "qmlelem",
+    "Item",
+    null,
+    [
+      [
+        "qmlpropdef",
+        "foo",
+        "string",
+        [
+          "stat",
+          [
+            "string",
+            "foo\""
+          ]
+        ],
+        "\"foo\\\"\"\n  "
+      ],
+      [
+        "qmlpropdef",
+        "bar",
+        "string",
+        [
+          "stat",
+          [
+            "string",
+            "foo\n                        hello\n                        world\n                       "
+          ]
+        ],
+        "\"foo\n                        hello\n                        world\n                       \"\n  "
+      ],
+      [
+        "qmlpropdef",
+        "test",
+        "string",
+        [
+          "stat",
+          [
+            "string",
+            "\n  '\n  "
+          ]
+        ],
+        "'\n  \\'\n  '\n"
+      ]
+    ]
+  ]
+]

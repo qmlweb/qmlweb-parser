@@ -77,12 +77,33 @@ function extractLinesForErrorDiag(text, line) {
   return r;
 }
 
-function qmlweb_tokenizer($TEXT) {
+function qmlweb_tokenizer($TEXT, document_type) {
   // Override UglifyJS methods
 
   parse_error = function(err) {
     throw new QMLParseError(err, S.tokline, S.tokcol, S.tokpos, S.text);
   };
+
+  if (document_type === qmlweb_parse.QMLDocument) {
+    // We need to support multiline strings in QML mode, allow newline chars
+    // We don't need to support octal escape sequences, as those are not
+    // supported in QML
+    read_string = function() {
+      return with_eof_error("Unterminated string constant", function(){
+        var quote = next(), ret = "";
+        for (;;) {
+          var ch = next(true);
+          if (ch == "\\") {
+            ch = read_escaped_char(true);
+          } else if (ch == quote) {
+            break;
+          }
+          ret += ch;
+        }
+        return token("string", ret);
+      });
+    }
+  }
 
   // WARNING: Here the original tokenizer() code gets embedded
   return tokenizer($TEXT);
@@ -90,9 +111,10 @@ function qmlweb_tokenizer($TEXT) {
 
 function qmlweb_parse($TEXT, document_type, exigent_mode) {
   var embed_tokens = false; // embed_tokens option is not supported
+  document_type = document_type || qmlweb_parse.QMLDocument;
 
   var TEXT = $TEXT.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/^\uFEFF/, '');
-  $TEXT = qmlweb_tokenizer($TEXT, true);
+  $TEXT = qmlweb_tokenizer($TEXT, document_type);
 
   // WARNING: Here the original parse() code gets embedded
   parse($TEXT,exigent_mode,false);
