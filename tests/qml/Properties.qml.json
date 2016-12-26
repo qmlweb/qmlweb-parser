@@ -151,7 +151,12 @@
             []
           ]
         ],
-        "Item {}\n"
+        "Item {}\n  "
+      ],
+      [
+        "qmlpropdef",
+        "items",
+        "list"
       ]
     ]
   ]

@@ -221,6 +221,15 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
   function qmlpropdef() {
     var type = S.token.value;
     next();
+
+    var subtype;
+    if (is("operator", "<")) {
+      next();
+      subtype = S.token.value;
+      next();
+      expect_token("operator", ">");
+    }
+
     var name = S.token.value;
     next();
     if (type == "alias") {
