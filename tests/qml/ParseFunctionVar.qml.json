@@ -11,7 +11,7 @@
   ],
   [
     "qmlelem",
-    "Item",
+    "MyItem",
     null,
     [
       [
@@ -46,7 +46,61 @@
             ]
           ]
         ],
-        "function(h) {\n    return 21;\n  }\n"
+        "function(h) {\n    return 21;\n  }\n  "
+      ],
+      [
+        "qmlprop",
+        "cFunction",
+        [
+          "function",
+          null,
+          [
+            "a",
+            "b",
+            "c"
+          ],
+          [
+            [
+              "stat",
+              [
+                "assign",
+                "/",
+                [
+                  "name",
+                  "a"
+                ],
+                [
+                  "num",
+                  2
+                ]
+              ]
+            ],
+            [
+              "return",
+              [
+                "binary",
+                "+",
+                [
+                  "binary",
+                  "-",
+                  [
+                    "name",
+                    "a"
+                  ],
+                  [
+                    "name",
+                    "b"
+                  ]
+                ],
+                [
+                  "name",
+                  "c"
+                ]
+              ]
+            ]
+          ]
+        ],
+        "function (a,b, c) {\n    a /= 2;\n    return a - b + c;\n  }\n"
       ]
     ]
   ]

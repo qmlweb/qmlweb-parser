@@ -141,8 +141,8 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
 
   var statement_js = statement;
   statement = function() {
-    var in_qmlpropdef = !!statement.in_qmlpropdef;
-    statement.in_qmlpropdef = false;
+    var in_qmlprop = !!statement.in_qmlprop;
+    statement.in_qmlprop = false;
     switch (S.token.type) {
     case "punc":
       switch (S.token.value) {
@@ -152,7 +152,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     case "keyword":
       switch (S.token.value) {
       case "function":
-        if (in_qmlpropdef) {
+        if (in_qmlprop) {
           next();
           return function_(false);
         }
@@ -240,7 +240,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     }
     if (is("punc", ":")) {
       next();
-      statement.in_qmlpropdef = true;
+      statement.in_qmlprop = true;
       return as_statement("qmlpropdef", name, type);
     } else if (is("punc", ";"))
       next();
@@ -318,6 +318,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
       } else {
         // Evaluatable item
         expect(":");
+        statement.in_qmlprop = true;
         return as_statement("qmlprop", propname);
       }
     } else if (is("keyword", "default")) {
