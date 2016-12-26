@@ -1,6 +1,6 @@
 {
   "error": {
     "name": "Error",
-    "message": "Unexpected token name undefined, expected punc : (line: 4, col: 11, pos: 38)\n  1  import QtQuick 2.5\n  2  \n  3  Item {\n>>4    properly int error: 11\n  5  }\n  6  \n\n"
+    "message": "Unexpected token name int, expected punc : (line: 4, col: 11, pos: 38)\n  1  import QtQuick 2.5\n  2  \n  3  Item {\n>>4    properly int error: 11\n  5  }\n  6  \n\n"
   }
 }

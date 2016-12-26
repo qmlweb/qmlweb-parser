@@ -136,7 +136,7 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
     if (is(type, val)) {
       return next();
     }
-    token_error(S.token, "Unexpected token " + S.token.type + " " + S.token.val + ", expected " + type + " " + val);
+    token_error(S.token, "Unexpected token " + S.token.type + " " + S.token.value + ", expected " + type + " " + val);
   };
 
   var statement_js = statement;
