@@ -14,4 +14,5 @@ Rectangle {
   property var foo: {}
   property var bar: []
   property Item item: Item {}
+  property list<Item> items
 }
