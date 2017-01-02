@@ -7,6 +7,13 @@
       2.5,
       "",
       true
+    ],
+    [
+      "qmlimport",
+      "QmlWeb.DOM",
+      1,
+      "DOM",
+      true
     ]
   ],
   [
@@ -157,6 +164,25 @@
         "qmlpropdef",
         "items",
         "list"
+      ],
+      [
+        "qmlpropdef",
+        "domDiv",
+        "var",
+        [
+          "stat",
+          [
+            "qmlelem",
+            [
+              "dot",
+              "DOM",
+              "Div"
+            ],
+            null,
+            []
+          ]
+        ],
+        "DOM.Div {}\n"
       ]
     ]
   ]

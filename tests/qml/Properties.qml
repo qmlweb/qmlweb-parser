@@ -1,4 +1,5 @@
 import QtQuick 2.5
+import QmlWeb.DOM 1.0 as DOM
 
 Rectangle {
   width: 75
@@ -15,4 +16,5 @@ Rectangle {
   property var bar: []
   property Item item: Item {}
   property list<Item> items
+  property var domDiv: DOM.Div {}
 }

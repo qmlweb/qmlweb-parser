@@ -194,8 +194,15 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
 
   function maybe_qmlelem(no_in) {
     var expr = maybe_assign(no_in);
-    if (is("punc", "{"))
-      return as("qmlelem", expr[1], undefined, qmlblock());
+    if (is("punc", "{")) {
+      var qmlelem_name;
+      if (expr[0] === "dot") {
+        qmlelem_name = ["dot", expr[1][1], expr[2]];
+      } else {
+        qmlelem_name = expr[1];
+      }
+      return as("qmlelem", qmlelem_name, undefined, qmlblock());
+    }
     return expr;
   }
 
