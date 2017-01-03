@@ -13,6 +13,9 @@ function buildTree(dir, data) {
   data = data || {};
   const subdirs = [];
   for (const file of fs.readdirSync(dir)) {
+    if (file[0] === ".") {
+        continue;
+    }
     const filePath = path.join(dir, file);
     if (fs.lstatSync(filePath).isDirectory()) {
       subdirs.push(filePath);
