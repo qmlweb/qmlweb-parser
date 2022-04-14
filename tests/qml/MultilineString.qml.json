@@ -17,6 +17,7 @@
       [
         "qmlpropdef",
         "foo",
+        false,
         "string",
         [
           "stat",
@@ -30,6 +31,7 @@
       [
         "qmlpropdef",
         "bar",
+        false,
         "string",
         [
           "stat",
@@ -43,6 +45,7 @@
       [
         "qmlpropdef",
         "test",
+        false,
         "string",
         [
           "stat",

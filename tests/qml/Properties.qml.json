@@ -88,16 +88,19 @@
       [
         "qmlpropdef",
         "flag",
+        false,
         "bool"
       ],
       [
         "qmlpropdef",
         "integer",
+        false,
         "int"
       ],
       [
         "qmlpropdef",
         "number",
+        false,
         "int",
         [
           "stat",
@@ -111,6 +114,7 @@
       [
         "qmlpropdef",
         "number2",
+        false,
         "int",
         [
           "stat",
@@ -124,6 +128,7 @@
       [
         "qmlpropdef",
         "foo",
+        false,
         "var",
         [
           "block",
@@ -134,6 +139,7 @@
       [
         "qmlpropdef",
         "bar",
+        false,
         "var",
         [
           "stat",
@@ -148,6 +154,7 @@
       [
         "qmlpropdef",
         "item",
+        false,
         "Item",
         [
           "stat",
@@ -163,11 +170,13 @@
       [
         "qmlpropdef",
         "items",
+        false,
         "list"
       ],
       [
         "qmlpropdef",
         "domDiv",
+        false,
         "var",
         [
           "stat",

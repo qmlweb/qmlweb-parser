@@ -15,12 +15,10 @@
     null,
     [
       [
-        "qmldefaultprop",
-        [
-          "qmlpropdef",
-          "defaultProperty",
-          "var"
-        ]
+        "qmlpropdef",
+        "defaultProperty",
+        true,
+        "var"
       ],
       [
         "qmlprop",

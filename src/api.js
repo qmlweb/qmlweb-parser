@@ -252,21 +252,23 @@ function qmlweb_parse($TEXT, document_type, exigent_mode) {
         var propName = S.token.value;
         next();
       }
-      return as("qmlaliasdef", name, objName, propName);
+      return as("qmlaliasdef", name, false, objName, propName);
     }
     if (is("punc", ":")) {
       next();
       statement.in_qmlprop = true;
-      return as_statement("qmlpropdef", name, type);
+      return as_statement("qmlpropdef", name, false, type);
     } else if (is("punc", ";"))
       next();
-    return as("qmlpropdef", name, type);
+    return as("qmlpropdef", name, false, type);
   }
 
   function qmldefaultprop() {
     next();
     expect_token("name", "property");
-    return as("qmldefaultprop", qmlpropdef());
+    const tree = qmlpropdef();
+    tree[2] = true;
+    return tree;
   }
 
   function qmlsignaldef() {

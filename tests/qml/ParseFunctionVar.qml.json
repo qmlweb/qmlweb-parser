@@ -17,6 +17,7 @@
       [
         "qmlpropdef",
         "aFunction",
+        false,
         "var",
         [
           "function",
@@ -29,6 +30,7 @@
       [
         "qmlpropdef",
         "bFunction",
+        false,
         "var",
         [
           "function",
